@@ -1,0 +1,10 @@
+deluxetags:
+  example:
+    tag: '&<##A05CFF>Astro'
+    description: '&<##A05CFF>Astro Tag'
+    order: 1
+  deluxetags:
+    example:
+      tag: '&8[&bDeluxeTags&8]'
+      description: '&aAwarded for using the most awesome chat tags plugin!'
+      order: 2

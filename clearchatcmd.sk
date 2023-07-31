@@ -1,0 +1,10 @@
+command /clearchat:
+  description: Clears Chat
+  usage: /clearchat
+  aliases: /cc, /clearchat
+  permission: admin, operator
+  trigger:
+    loop 200 times:
+      broadcast " "
+    broadcast "&bChat has been cleared by &d%player%"
+    stop

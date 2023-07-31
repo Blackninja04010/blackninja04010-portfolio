@@ -1,0 +1,4 @@
+on break of oak log:
+    if player's gamemode is survival
+    cancel event
+    give player oak log named "&cOak Log"

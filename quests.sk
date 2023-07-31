@@ -1,0 +1,269 @@
+options:
+	# MESSAGES CONFIGURATION
+	message_prefix: <##A05CFF>&lVoiding &8•&7
+	message_borders: &8&m                                                &r
+
+	# COLORS CONFIGURATION
+	color_first: &7
+	color_second: &e
+	color_third: <##be8fff>
+	color_fourth: &8
+	color_error: &c
+
+	# ERRORS CONFIIGURATION
+	# Use <arg> for the permission, correct usage, or incorrect type. <type> for the "error_not_correct_type"
+	error_no_permission: &c&l(!) &cI can't let you do that!%nl%&c&l(!) &cMissing Permission: &e<arg>
+	error_not_player: &c&l(!) &cOnly players can execute this command!
+	error_wrong_usage: &c&l(!) &cIncorrect Usage!%nl%&c&l(!)&cCorrect Usage: &e<arg>
+	error_not_correct_type: &c&l(!) &e<arg> &cisn't the required type! &8(&e<type>&8)
+
+	# ALERTS CONFIGURATION
+	# Use <script> for the skript file, And <reload_time> for the reloaded time.
+	alerts_reload_enabled: true
+	alerts_reload_message: &r%nl%&c&l(!) &e<script>.sk &7reloaded in &e<reload_time>!%nl%&r
+	alerts_reloading_enabled: true
+	alerts_reloading_message: &r%nl%&c&l(!) &e<script>.sk &7is being reloaded! This may cause lag.%nl%&r
+
+	# GUI ITEMS CONFIGURATION
+	# Here you can set the items used in GUIs.
+	filler: gray stained glass pane named ""
+
+	# LAG PROTECTION CONFIGURATION
+	# These options are for the "algorithm" that should hopefully reduce lag caused by this Skript.
+	low_lag_protection: 0.1 + ((20 - tps from the last minute) / 4) * 2 # These are used for code that generally isn't intensive, So you can leave it at pretty low numbers.
+	medium_lag_protection: 1.5 + ((20 - tps from the last minute) / 2) * 2 # These are used for code that are kind of intensive, Like hologram reloading, Loops, And what not.
+	high_lag_protection: 6 + (20 - tps from the last minute) * 2 # These are used for code that are what I think, really intensive, Like setting a lot of blocks, Or just in simple codes, YANDEREDEV CODE TYPE SHIT
+	pane-1: black stained glass pane named " "
+	pane-2: gray stained glass pane named " "
+
+command /achievements:
+	permission: *
+	trigger:
+		achievementGUI(player)
+
+function achievementGUI(p: player):
+	create a gui with virtual chest inventory with 3 rows named "Achievements":
+		make gui slot 10 with grass block named "&a&lTUTORIAL" with lore ("", "{@color_third}&l%toFancyText("Information")%", "<##be8fff>┃ &7Progress: &f0&8/&f5", "" and "&7%toFancyText("click to view achievements.")%"):
+			create a gui with virtual chest inventory with 3 rows named "Achievements > Tutorial":
+				if {haybale::%{_p}'s uuid%} is true:
+					set {_status} to "&eClaimable"
+				if {achievements::tutoiral1::%{_p}'s uuid%} is true:
+					set {_status} to "&aClaimed"
+				if {haybale::%{_p}'s uuid%} isn't set:
+					set {_status} to "&cLocked"
+				make gui slot 10 with hay bale named "&a&lSTARTER" with lore ("&7%toFancyText("place hay bale generator")%", "", "{@color_third}&l%toFancyText("Information")%", "<##be8fff>┃ &fStatus: %{_status}%", "<##be8fff>┃ &fReward: &bRare Lootbox" and ""):
+					if {haybale::%player's uuid%} is true:
+						if {achievements::tutoiral1::%{_p}'s uuid%} isn't set:
+							set {achievements::tutoiral1::%{_p}'s uuid%} to true
+							make console execute "givelootbox %{_p}% Rare 1"
+							close {_p}'s inventory
+				make gui slot 11 with diamond pickaxe named "&3&lMINER" with lore ("&7%toFancyText("visit the mine")%", "", "{@color_third}&l%toFancyText("Information")%", "<##be8fff>┃ &fStatus: &cLocked", "<##be8fff>┃ &fReward: &61k tokens" and "") with all flags hidden
+			open the created gui for {_p}
+		make gui slot 11 with sunflower named "&6&lTOKENS" with lore ("", "{@color_third}&l%toFancyText("Information")%", "<##be8fff>┃ &7Progress: &f0&8/&f5", "" and "&7%toFancyText("click to view achievements.")%")
+		make gui slot 12 with coal block named "&3&lMINING" with lore ("", "{@color_third}&l%toFancyText("Information")%", "<##be8fff>┃ &7Progress: &f0&8/&f5", "" and "&7%toFancyText("click to view achievements.")%")
+		make gui slot 14 with cod named "&9&lFISHING" with lore ("", "{@color_third}&l%toFancyText("Information")%", "<##be8fff>┃ &7Progress: &f0&8/&f5", "" and "&7%toFancyText("click to view achievements.")%")
+		make gui slot 15 with diamond named "&b&lPRESTIGES" with lore ("", "{@color_third}&l%toFancyText("Information")%", "<##be8fff>┃ &7Progress: &f0&8/&f5", "" and "&7%toFancyText("click to view achievements.")%")
+		make gui slot 16 with red dye named "&c&lComing Soon"
+	open the created gui for {_p}
+
+# - Quests
+
+# Setting Variables
+on join:
+# Stats
+	if {Stat::%player's uuid%::MinedCoalOre} isn't set:
+		set {Stat::%player's uuid%::MinedCoalOre} to 0
+	if {Stat::%player's uuid%::MinedIronOre} isn't set:
+		set {Stat::%player's uuid%::MinedIronOre} to 0
+	if {Stat::%player's uuid%::MinedGoldOre} isn't set:
+		set {Stat::%player's uuid%::MinedGoldOre} to 0
+	if {Stat::%player's uuid%::MinedDiamondOre} isn't set:
+		set {Stat::%player's uuid%::MinedDiamondOre} to 0
+	if {Stat::%player's uuid%::MinedEmeraldOre} isn't set:
+		set {Stat::%player's uuid%::MinedEmeraldOre} to 0
+	if {Stat::%player's uuid%::FishCaught} isn't set:
+		set {Stat::%player's uuid%::FishCaught} to 0
+	if {Stat::%player's uuid%::CommonFishCaught} isn't set:
+		set {Stat::%player's uuid%::CommonFishCaught} to 0
+	if {Stat::%player's uuid%::UncommonFishCaught} isn't set:
+		set {Stat::%player's uuid%::UncommonFishCaught} to 0
+	if {Stat::%player's uuid%::RareFishCaught} isn't set:
+		set {Stat::%player's uuid%::RareFishCaught} to 0
+	if {Stat::%player's uuid%::EpicFishCaught} isn't set:
+		set {Stat::%player's uuid%::EpicFishCaught} to 0
+	if {Stat::%player's uuid%::LegendaryFishCaught} isn't set:
+		set {Stat::%player's uuid%::LegendaryFishCaught} to 0
+	if {Stat::%player's uuid%::MythicalFishCaught} isn't set:
+		set {Stat::%player's uuid%::MythicalFishCaught} to 0
+# Achievments
+	if {Achievment::%player's uuid%::VisitedMines} isn't set:
+		set {Achievment::%player's uuid%::VisitedMines} to false
+	if {Achievment::%player's uuid%::Mine100CoalOre} isn't set:
+		set {Achievment::%player's uuid%::Mine100CoalOre} to false
+	if {Achievment::%player's uuid%::Mine100IronOre} isn't set:
+		set {Achievment::%player's uuid%::Mine100IronOre} to false
+	if {Achievment::%player's uuid%::Mine100GoldOre} isn't set:
+		set {Achievment::%player's uuid%::Mine100GoldOre} to false
+	if {Achievment::%player's uuid%::Mine100DiamondOre} isn't set:
+		set {Achievment::%player's uuid%::Mine100DiamondOre} to false
+	if {Achievment::%player's uuid%::Mine100EmeraldOre} isn't set:
+		set {Achievment::%player's uuid%::Mine} to false
+	if {Achievment::%player's uuid%::1EpicFishcaught} isn't set:
+		set {Achievment::%player's uuid%::1EpicFishCaught} to false
+	if {Achievment::%player's uuid%::1LegendaryFishcaught} isn't set:
+		set {Achievment::%player's uuid%::1LegendaryFishCaught} to false
+	if {Achievment::%player's uuid%::1MythicalFishcaught} isn't set:
+		set {Achievment::%player's uuid%::1MythicalFishCaught} to false
+
+
+# - Mining
+
+# visit the mine
+command setachievment [<string>]:
+	permission: op
+	trigger:
+		if arg 1 is "visit_mines":
+			set {Achievment::%sender's uuid%::VisitMines} to true
+
+on tab complete of "/setachievment":
+	set tab completions for position 1 to "visit_mines"
+
+# Coal Ore
+on break of coal ore:
+	if event-entity is a player:
+		add 1 to {Stat::%player's uuid%::MinedCoalOre}
+		if {Stat::%player's uuid%::MinedCoalOre} = 100:
+			set {Achievment::%player's uuid%::Mine100CoalOre} to true
+			send "<tooltip:&6100 Coal Ore Mined>&6Achievment Completed!"
+#		if {Stat::%player's uuid%::MinedCoalOre} = :
+#			set {Quest::%player's uuid%MinedCoalOre} to true
+#			send "<tooltip:&6 Coal Ore Mined>&6Quest Completed!"
+
+# Iron Ore
+on break of iron ore:
+	if event-entity is a player:
+		add 1 to {Stat::%player's uuid%::MinedIronOre}
+		if {Stat::%player's uuid%::MinedIronOre} = 100:
+			set {Achievment::%player's uuid%::Mine100IronOre} to true
+			send "<tooltip:&6100 Iron Ore Mined>&6Achievment Completed!"
+#		if {Stat::%player's uuid%::MinedIronOre} = :
+#			set {Achievment::%player's uuid%::MineIronOre} to true
+#			send "<tooltip:&6 Iron Ore Mined>&6Achievment Completed!"
+
+# Gold Ore
+on break of gold ore:
+	if event-entity is a player:
+		add 1 to {Stat::%player's uuid%::MinedGoldOre}
+		if {Stat::%player's uuid%::MinedGoldOre} = 100:
+			set {Achievment::%player's uuid%::Mine100GoldOre} to true
+			send "<tooltip:&6100 Gold Ore Mined>&6Achievment Completed!"
+#		if {Stat::%player's uuid%::MinedGoldOre} = :
+#			set {Achievment::%player's uuid%::MineGoldOre} to true
+#			send "<tooltip:&6 Gold Ore Mined>&6Achievment Completed!"
+
+# Diamond Ore
+on break of diamond ore:
+	if event-entity is a player:
+		add 1 to {Stat::%player's uuid%::MinedDiamondOre}
+		if {Stat::%player's uuid%::MinedDiamondOre} = 100:
+			set {Achievment::%player's uuid%::Mine100DiamondOre} to true
+			send "<tooltip:&6100 Diamond Ore Mined>&6Achievment Completed!"
+#		if {Stat::%player's uuid%::MinedDiamondOre} = :
+#			set {Achievment::%player's uuid%::MineDiamondOre} to true
+#			send "<tooltip:&6 Diamond Ore Mined>&6Achievment Completed!"
+
+# Emerald Ore
+on break of emerald ore:
+	if event-entity is a player:
+		add 1 to {Stat::%player's uuid%::MinedEmeraldOre}
+		if {Stat::%player's uuid%::MinedEmeraldOre} = 100:
+			set {Achievment::%player's uuid%::Mine100EmeraldOre} to true
+			send "<tooltip:&6100 Emerald Ore Mined>&6Achievment Completed!"
+#		if {Stat::%player's uuid%::MinedEmeraldOre} = :
+#			set {Achievment::%player's uuid%::MineEmeraldOre} to true
+#			send "<tooltip:&6 Emerald Ore Mined>&6Achievment Completed!"
+
+# - Fishing
+
+# Total Fish Caught
+on fish:
+	if fishing state = caught fish:
+		add 1 to {Stat::%player's uuid%::CaughtFish}
+		if {Stat::%player's uuid%::CaughtFish} = 200:
+			set {Achievment::%player's uuid%::100FishCaught} to true
+			send "<tooltip:&6100 Fish Caught>&6Achievment Completed!"
+#		if {Stat::%player's uuid%::CaughtFish} = :
+#			set {Achievment::%player's uuid%::FishCaught} to true
+#			send "<tooltip:&6 Fish Caught>&6Achievment Completed!"
+
+# Common Fish Caught
+on fish:
+	if fishing state = caught fish:
+		if uncolored lore of caught fish contains "COMMON":
+			add 1 to {Stats::%player's uuid%::CommonFishCaught}
+#			if {Stats::%player's uuid%::CommonFishCaught} = :
+#				set {Achievment::%player's uuid%::CommonFishCaught} to true
+#				send "<tooltip:&6 Common Fish Caught>&6Achievment Completed!"
+
+# Uncommon Fish Caught
+on fish:
+	if fishing state = caught fish:
+		if uncolored lore of caught fish contains "UNCOMMON":
+			add 1 to {Stats::%player's uuid%::UncommonFishCaught}
+#			if {Stats::%player's uuid%::UncommonFishCaught} = :
+#				set {Achievment::%player's uuid%::UncommonFishCaught} to true
+#				send "<tooltip:&6 Uncommon Fish Caught>&6Achievment Completed!"
+
+# Rare Fish Caught
+on fish:
+	if fishing state = caught fish:
+		if uncolored lore of caught fish contains "RARE":
+			add 1 to {Stats::%player's uuid%::RareFishCaught}
+#			if {Stats::%player's uuid%::EpicFishCaught} = :
+#				set {Achievment::%player's uuid%::EpicFishCaught} to true
+#				send "<tooltip:&6 Rare Fish Caught>&6Achievment Completed!"
+
+# Epic Fish Caught
+on fish:
+	if fishing state = caught fish:
+		if uncolored lore of caught fish contains "EPIC":
+			add 1 to {Stats::%player's uuid%::EpicFishCaught}
+			if {Stats::%player's uuid%::EpicFishCaught} = 1:
+				set {Achievment::%player's uuid%::1EpicFishCaught} to true
+				send "<tooltip:&61 Epic Fish Caught>&6Achievment Completed!"
+#			if {Stats::%player's uuid%::EpicFishCaught} = :
+#				set {Achievment::%player's uuid%::EpicFishCaught} to true
+#				send "<tooltip:&6 Epic Fish Caught>&6Achievment Completed!"
+
+# Legendary Fish Caught
+on fish:
+	if fishing state = caught fish:
+		if uncolored lore of caught fish contains "LEGENDARY":
+			add 1 to {Stats::%player's uuid%::LegendaryFishCaught}
+			if {Stats::%player's uuid%::LegendaryFishCaught} = 1:
+				set {Achievment::%player's uuid%::1LegendaryFishCaught} to true
+				send "<tooltip:&61 Legendary Fish Caught>&6Achievment Completed!"
+#			if {Stats::%player's uuid%::LegendaryFishCaught} = :
+#				set {Achievment::%player's uuid%::LegendaryFishCaught} to true
+#				send "<tooltip:&6 Legendary Fish Caught>&6Achievment Completed!"
+
+# Mythical Fish Caught
+on fish:
+	if fishing state = caught fish:
+		if uncolored lore of caught fish contains "MYTHICAL":
+			add 1 to {Stats::%player's uuid%::MythicalFishCaught}
+			if {Stats::%player's uuid%::MythicalFishCaught} = 1:
+				set {Achievment::%player's uuid%::1MythicalFishCaught} to true
+				send "<tooltip:&61 Mythical Fish Caught>&6Achievment Completed!"
+#			if {Stats::%player's uuid%::MythicalFishCaught} = :
+#				set {Achievment::%player's uuid%::MythicalFishCaught} to true
+#				send "<tooltip:&6 Mythical Fish Caught>&6Achievment Completed!"
+
+#  Added Quests
+
+# Crates? (i don't know what event i should use)
+
+
+# 
+
+#

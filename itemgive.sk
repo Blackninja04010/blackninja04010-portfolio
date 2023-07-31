@@ -1,0 +1,14 @@
+on script load:
+    set {item::CrimsonBow} to bow with model data 62 named "&4Crimson Bow" with lore "&dA bow of crimson wood"
+
+command giveitem [<string>]:
+    permission: op, admin
+    permission message: &cInsufficient Permission!
+    aliases: gi
+    usage: &cIncorrect usage! &7Correct usage &a/giveitem [item name]
+    trigger:
+        if arg 1 is "crimson_bow":
+            give 1 of {item::CrimsonBow} to player
+
+on tab complete of "/giveitem":
+    set tab completions of position 1 to "crimson_bow"

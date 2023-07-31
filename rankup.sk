@@ -1,0 +1,135 @@
+
+
+# ------------ [ CONFIGURATION ] ------------ #
+
+options:
+	# MESSAGE CONFIGURATION   
+
+	prefix: <##A05CFF>&lVoiding &8•&7
+	borders: &8&m                              &r
+	
+	# COLOR CONFIGURATION
+	
+	c1: <##A05CFF>
+	c2: <##be8fff>
+	c3: &7
+
+	# ERROR CONFIGURATION
+
+	error_no_permission: "&8(&c&l!&8) &cYou can't perform this command." and "&8(&c&l!&8)Missing Permission: <##A05CFF>(0)"
+	error_wrong_usage: "&8(&c&l!&c) &cIncorrect Usage" and "&8(&c&l!&8) &cCorrect usage: <##A05CFF>(0)"
+
+	# ALERT CONFIGURATION
+
+	alert_reload: false
+	alert_reload_message: "&8(&c&l!&8) &7Reloading <##9EC2E2>skripts&7, This may cause lag."
+
+	pane-1: black stained glass pane named " "
+	pane-2: gray stained glass pane named " "
+
+command /rankup:
+	trigger:
+		if {rank::%player's uuid%} isn't set:
+			set {rank::%player's uuid%} to 0
+		create a gui with virtual chest inventory with 3 rows named "Rankup":
+			loop 27 times:
+				make next gui slot with {@pane-1}
+				make next gui slot with {@pane-2}
+			make gui slot 10 with book named "{@c1}Rank 1" with lore "" and "&fRequirements" and " &8• {@c1}$100k" and "" and "&fPerks" and " &8• {@c1}Total of 2 plots":
+				if {rank::%player's uuid%} is 0:
+					if {balance::%player's uuid%} >= 100000:
+						remove 100000 from {balance::%player's uuid%}
+						add 1 to {rank::%player's uuid%}
+						execute console command "lp user %player% permission set plots.plot.2 gens"
+						send "%getPrefix()% &7You have ranked up to {@c1}Rank 1"
+
+					else:
+						send "&cYou don't have enough money to rankup."
+				else if {rank::%player's uuid%} >= 1:
+					send "%getPrefix()% You already bought this rank."
+			make gui slot 11 with book named "{@c1}Rank 2" with lore "" and "&fRequirements" and " &8• {@c1}$1m" and "" and "&fPerks" and " &8• {@c1}Impulse Key" and " &8• {@c1}/workbench":
+				if {rank::%player's uuid%} is 1:
+					if {balance::%player's uuid%} >= 1000000:
+						remove 1000000 from {balance::%player's uuid%}
+						add 1 to {rank::%player's uuid%}
+						execute console command "lp user %player% permission set essentials.workbench gens"
+						execute console command "scrates givekey Impulse %player% 1"
+						send "%getPrefix()% &7You have ranked up to {@c1}Rank 2"
+					else:
+						send "&cYou don't have enough money to rankup."
+				else if {rank::%player's uuid%} >= 2:
+					send "%getPrefix()% You already bought this rank."
+				else:
+					send "%getPrefix()% You need to buy the previous rank first."
+			make gui slot 12 with book named "{@c1}Rank 3" with lore "" and "&fRequirements" and " &8• {@c1}$25m" and "" and "&fPerks" and " &8• {@c1}Custom Prefix in chat" and " &8• {@c1}Kraken Key" and " &8• {@c1}/fly":
+				if {rank::%player's uuid%} is 2:
+					if {balance::%player's uuid%} >= 25000000:
+						remove 25000000 from {balance::%player's uuid%}
+						add 1 to {rank::%player's uuid%}
+						execute console command "lp user %player% permission set essentials.fly gens"
+						execute console command "scrates givekey Kraken %player% 1"
+						execute console command "lp user %player% parent add Kraken gens"
+						send "%getPrefix()% &7You have ranked up to {@c1}Rank 3"
+					else:
+						send "&cYou don't have enough money to rankup."
+				else if {rank::%player's uuid%} >= 3:
+					send "%getPrefix()% You already bought this rank."
+				else:
+					send "%getPrefix()% You need to buy the previous rank first."
+			make gui slot 13 with book named "{@c1}Rank 4" with lore "" and "&fRequirements" and " &8• {@c1}$40m" and "" and "&fPerks" and " &8• {@c1}Astro Key" and " &8• {@c1}Total of 3 plots":
+				if {rank::%player's uuid%} is 3:
+					if {balance::%player's uuid%} >= 40000000:
+						remove 40000000 from {balance::%player's uuid%}
+						add 1 to {rank::%player's uuid%}
+						execute console command "lp user %player% permission set plots.plot.3 gens"
+						execute console command "scrates givekey Astro %player% 1"
+						send "%getPrefix()% &7You have ranked up to {@c1}Rank 4"
+					else:
+						send "&cYou don't have enough money to rankup."
+				else if {rank::%player's uuid%} is 4:
+					send "%getPrefix()% You already bought this rank."
+				else:
+					send "%getPrefix()% You need to buy the previous rank first."
+			make gui slot 14 with book named "{@c1}Rank 5" with lore "" and "&fRequirements" and " &8• {@c1}$100m" and "" and "&fPerks" and " &8• {@c1}X3 Astro Key":
+				if {rank::%player's uuid%} is 4:
+					if {balance::%player's uuid%} >= 100000000:
+						remove 100000000 from {balance::%player's uuid%}
+						add 1 to {rank::%player's uuid%}
+						execute console command "scrates givekey Astro %player% 3"
+						send "%getPrefix()% &7You have ranked up to {@c1}Rank 5"
+					else:
+						send "&cYou don't have enough money to rankup."
+				else if {rank::%player's uuid%} is 5:
+					send "%getPrefix()% You already bought this rank."
+				else:
+					send "%getPrefix()% You need to buy the previous rank first."
+			make gui slot 15 with book named "{@c1}Rank 5" with lore "" and "&fRequirements" and " &8• {@c1}$500m" and "" and "&fPerks" and " &8• {@c1}X5 Astro Key" and " &8• {@c1}Total of 4 plots":
+				if {rank::%player's uuid%} is 5:
+					if {balance::%player's uuid%} >= 500000000:
+						remove 500000000 from {balance::%player's uuid%}
+						add 1 to {rank::%player's uuid%}
+						execute console command "lp user %player% permission set plots.plot.4 gens"
+						execute console command "scrates givekey Astro %player% 5"
+						send "%getPrefix()% &7You have ranked up to {@c1}Rank 6"
+					else:
+						send "&cYou don't have enough money to rankup."
+				else if {rank::%player's uuid%} is 6:
+					send "%getPrefix()% You already bought this rank."
+				else:
+					send "%getPrefix()% You need to buy the previous rank first."
+			make gui slot 16 with book named "{@c1}Rank 5" with lore "" and "&fRequirements" and " &8• {@c1}$1b" and "" and "&fPerks" and " &8• {@c1}X10 Astro Key":
+				if {rank::%player's uuid%} is 6:
+					if {balance::%player's uuid%} >= 1000000000:
+						remove 1000000000 from {balance::%player's uuid%}
+						add 1 to {rank::%player's uuid%}
+						execute console command "scrates givekey Astro %player% 10"
+						execute console command "lp user %player% parent add Astro gens"
+						send "%getPrefix()% &7You have ranked up to {@c1}Rank 7"
+					else:
+						send "&cYou don't have enough money to rankup."
+				else if {rank::%player's uuid%} is 7:
+					send "%getPrefix()% You already bought this rank."
+				else:
+					send "%getPrefix()% You need to buy the previous rank first."
+		open the created gui for player
+
